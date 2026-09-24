@@ -38,6 +38,25 @@ Presentation is split the same way. [`theme.h`](src/theme.h) holds the design to
 those pieces together. The UI font (JetBrains Mono, OFL) is baked into the binary, so the
 native app, the web build, and the standalone exe all render the same.
 
+## How it works
+
+Each frame reads input, advances the chosen search by as many single-node steps as the elapsed time allows, and draws the grid from what the search reports.
+
+![Pathfinder: system overview](docs/diagrams/overview.png)
+The frame loop, the playback controller, the search core behind the `Pathfinder` interface, and the two loops (desktop and browser) that drive it.
+
+![Pathfinder: one search run, frame by frame](docs/diagrams/main-flow.png)
+One run from pressing Space to the drawn path, with one `step()` expansion per tick of the controller.
+
+![Pathfinder: playback states](docs/diagrams/states.png)
+The `SearchController` modes and the keys that move between them.
+
+![Pathfinder: build and deploy](docs/diagrams/deployment.png)
+`ci.yml` builds and tests the native app; `deploy.yml` builds the WebAssembly target and publishes it to GitHub Pages.
+
+Interactive versions with pan, zoom and theme switch: `docs/diagrams/overview.html`, `docs/diagrams/main-flow.html`, `docs/diagrams/states.html`, `docs/diagrams/deployment.html`
+
+
 ## The algorithms
 
 Listed in the order the number keys step through them, which is also the order the demo
@@ -216,7 +235,7 @@ cmake --build build-web
 ```
 
 The web build produces `build-web/pathfinder.html` along with its `.js` and `.wasm` files.
-The deploy workflow publishes them to GitHub Pages on every push to `master`.
+The deploy workflow publishes them to GitHub Pages on every push to `main`.
 
 ## Future work
 
